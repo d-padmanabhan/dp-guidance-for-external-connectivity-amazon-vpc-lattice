@@ -71,6 +71,8 @@ repos:
       - id: commitlint
         name: Commitlint
         stages: [commit-msg]
+        additional_dependencies:
+          - "@commitlint/config-conventional"
 
   # Lint GitHub Actions workflows
   - repo: https://github.com/rhysd/actionlint
