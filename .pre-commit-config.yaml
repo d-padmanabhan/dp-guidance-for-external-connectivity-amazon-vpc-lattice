@@ -98,6 +98,12 @@ repos:
         language: system
         entry: hadolint
         files: ^proxies/.*/Dockerfile$
+      - id: shfmt
+        name: shfmt (format shell scripts)
+        language: system
+        entry: shfmt
+        args: [-w, -i, "2", -ci, -sr, -bn]
+        files: \.sh$
       - id: nginx-config-test
         name: nginx -t (validate nginx.conf in the shipped image)
         language: script

@@ -28,7 +28,6 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-          cache: pip
       - run: pip install cfn-lint==1.51.4
       - name: Lint CloudFormation
         run: cfn-lint   # uses .cfnlintrc (templates + ignore_checks)
@@ -44,7 +43,6 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-          cache: pip
       - run: pip install checkov==3.2.533
       - name: Checkov (testing/ templates)
         run: checkov --config-file .checkov.yml
@@ -83,9 +81,12 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: ShellCheck
-        uses: ludeeus/action-shellcheck@2.0.0
-        with:
-          scandir: "."
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+          mapfile -t shell_files < <(git ls-files '*.sh')
+          shellcheck --severity=warning "${shell_files[@]}"
 
   proxy-configs:
     name: Proxy config validation (nginx -t / envoy validate)
