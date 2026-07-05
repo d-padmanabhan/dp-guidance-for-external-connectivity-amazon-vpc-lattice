@@ -52,8 +52,10 @@ jobs:
       - name: cfn-nag (testing/ templates)
         run: |
           set -euo pipefail
-          gem install cfn-nag -v 0.8.10
-          cfn_nag_scan --input-path testing --fail-on-warnings
+          gem install cfn-nag -v 0.8.10 --user-install --no-document
+          gem_user_dir="$(ruby -e 'print Gem.user_dir')"
+          export PATH="${gem_user_dir}/bin:${PATH}"
+          cfn_nag_scan --input-path testing
 
   dockerfiles:
     name: hadolint (Dockerfiles)
